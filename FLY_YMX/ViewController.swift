@@ -18,12 +18,12 @@ class ViewController: UIViewController {
     var bird:UIImageView!
     var birdIsDown:Bool = true
     var velocity:Float = 0
-    var temp = true
     var birdTimer:Timer?
-    
+    var GG:Bool = false
+    var score:UILabel?
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view, typically from a nib.
         self.creatBackAndFloor()
         self.creatTimer()
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         self.view.addSubview(backImage1)
         self.view.addSubview(backImage2)
     }
-    //创建障碍物(obstacle)
+    //创建障碍物(obstacle) 分数显示器
     func creatObstacle(){
         let obstacle1 = UIImage(named: "04.png")
         let obstacle2 = UIImage(named: "05.png")
@@ -66,6 +66,12 @@ class ViewController: UIViewController {
                 self.view.insertSubview(bottomObstacle!, aboveSubview: bgImage)
             }
         }
+        self.score = UILabel(frame: CGRect(x: 30, y: 100, width: SCREEN_SIZE.width-60, height: 100))
+        self.score?.text = "0"
+        self.score?.font = UIFont(descriptor: UIFontDescriptor(), size: 70)
+        self.score?.textColor = UIColor.white
+        self.score?.textAlignment = .center
+        self.view.addSubview(self.score!)
     }
     //创建小鸟
     func creatBird() {
@@ -85,7 +91,7 @@ class ViewController: UIViewController {
         self.view.addSubview(bird)
     }
     //随机障碍物高度和距离
-   func randomObstacle(topObstacle:UIImageView,bottomObstacle:UIImageView){
+    func randomObstacle(topObstacle:UIImageView,bottomObstacle:UIImageView){
         let distance = CGFloat(arc4random()%100) + OBSTACLE_SPACE
         let height = CGFloat(arc4random()%100+200)
         var frame = topObstacle.frame
@@ -101,7 +107,7 @@ class ViewController: UIViewController {
         self.bgTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(backGroundMove), userInfo: nil, repeats: true)
         self.obstacleTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(obstacleMove), userInfo: nil, repeats: true)
         self.birdTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(birdMove), userInfo: nil, repeats: true)
-      //  self.bgTimer?.fireDate = NSDate.distantFuture
+        //  self.bgTimer?.fireDate = NSDate.distantFuture
         self.obstacleTimer?.fireDate = NSDate.distantFuture
         //self.birdTimer?.fireDate = NSDate.distantFuture
     }
@@ -132,30 +138,33 @@ class ViewController: UIViewController {
             let bottomView = self.view.viewWithTag(i*2+201) as! UIImageView
             var topFrame = topView.frame
             var bottomFrame = bottomView.frame
-                if topFrame.origin.x > -SCREEN_SIZE.width {
-                    topFrame.origin.x -= 2
-                    bottomFrame.origin.x -= 2
-                    
-                    topView.frame = topFrame
-                    bottomView.frame = bottomFrame
+            if topFrame.origin.x > -SCREEN_SIZE.width {
+                topFrame.origin.x -= 2
+                bottomFrame.origin.x -= 2
+                topView.frame = topFrame
+                bottomView.frame = bottomFrame
+                //加分判定
+                if bird.frame.origin.x == topFrame.origin.x||bird.frame.origin.x == topFrame.origin.x+1 {
+                    self.score?.text = String(Int(score!.text!)!+1)
                 }
-                else {
-                    topFrame.origin.x = SCREEN_SIZE.width
-                    bottomFrame.origin.x = SCREEN_SIZE.width
-                    
-                    topView.frame = topFrame
-                    bottomView.frame = bottomFrame
-                    self.randomObstacle(topObstacle: topView, bottomObstacle: bottomView)
-                }
+            }
+            else {
+                topFrame.origin.x = SCREEN_SIZE.width
+                bottomFrame.origin.x = SCREEN_SIZE.width
+                
+                topView.frame = topFrame
+                bottomView.frame = bottomFrame
+                self.randomObstacle(topObstacle: topView, bottomObstacle: bottomView)
+            }
         }
     }
     //小鸟的移动
     func birdMove() {
-            var frame = bird.frame
-            let dist = ( (velocity * 0.02) + 9.8 * 0.02 * 0.02/2 ) * 50
-            frame.origin.y += CGFloat(dist)
-            velocity += 9.8 * 0.02
-            bird.frame = frame
+        var frame = bird.frame
+        let dist = ( (velocity * 0.02) + 9.8 * 0.02 * 0.02/2 ) * 50
+        frame.origin.y += CGFloat(dist)
+        velocity += 9.8 * 0.02
+        bird.frame = frame
     }
     //死亡判定
     func isHit() {
@@ -168,32 +177,61 @@ class ViewController: UIViewController {
         let floor1:UIView! = self.view.viewWithTag(102)
         let floor2:UIView! = self.view.viewWithTag(103)
         if  obstacle1.frame.intersects(bird.frame)||obstacle2.frame.intersects(bird.frame)||obstacle3.frame.intersects(bird.frame)||obstacle4.frame.intersects(bird.frame)||obstacle5.frame.intersects(bird.frame)||obstacle6.frame.intersects(bird.frame)||floor1.frame.intersects(bird.frame)||floor2.frame.intersects(bird.frame)||bird.frame.origin.y < -100 {
-            print("gameover")
+            self.gameOver()
+            self.stop__()
+            GG = true
         }
+    }
+    func birdUp() {
+        velocity = -1
+        var frame = self.bird.frame
+        frame.origin.y -= 40
+        UIView.animate(withDuration: 0.2, animations:{
+            self.bird.frame = frame
+        })
+    }
+    func gameOver() {
+        let overImage = UIImage(named: "gameover2.png")
+        let gameover = UIImageView(frame: CGRect(x: 30, y: 200, width: SCREEN_SIZE.width-60, height: 60))
+        gameover.image = overImage
+        gameover.tag = 666
+        self.view.addSubview(gameover)
+    }
+    func reloadGame() {
+        GG = false
+        self.velocity = 0
+        let gameover = self.view.viewWithTag(666)
+        gameover?.removeFromSuperview()
+        var frame = bird.frame
+        frame.origin.y = 100
+        bird.frame = frame
+        for i in 1...3 {
+            let obstacle1 = self.view.viewWithTag(200+i*2) as! UIImageView
+            let obstacle2 = self.view.viewWithTag(201+i*2) as! UIImageView
+            self.randomObstacle(topObstacle: obstacle1, bottomObstacle: obstacle2)
+            obstacle1.frame.origin.x = SCREEN_SIZE.width + CGFloat(i)*OBSTACLE_DISTANCE
+            obstacle2.frame.origin.x = SCREEN_SIZE.width + CGFloat(i)*OBSTACLE_DISTANCE
+            
+        }
+        self.score?.text = "0"
     }
     func fire__ () {
         self.bgTimer?.fireDate = NSDate.distantPast
         self.obstacleTimer?.fireDate = NSDate.distantPast
+        self.birdTimer?.fireDate = NSDate.distantPast
     }
     func stop__() {
         self.bgTimer?.fireDate = NSDate.distantFuture
         self.obstacleTimer?.fireDate = NSDate.distantFuture
+        self.birdTimer?.fireDate = NSDate.distantFuture
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        velocity = 0
-        var frame = self.bird.frame
-        frame.origin.y -= 70
-        UIView.animate(withDuration: 0.2, animations:{
-        self.bird.frame = frame
-        })
-        if temp {
-            self.fire__()
+        self.fire__()
+        if !GG {
+            self.birdUp()
+        } else {
+            reloadGame()
         }
-        /*else{
-            self.stop__()
-            
-        }*/
-        temp = !temp
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
