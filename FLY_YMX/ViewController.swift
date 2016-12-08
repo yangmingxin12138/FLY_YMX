@@ -161,7 +161,7 @@ class ViewController: UIViewController {
     //小鸟的移动
     func birdMove() {
         var frame = bird.frame
-        let dist = ( (velocity * 0.02) + 9.8 * 0.02 * 0.02/2 ) * 50
+        let dist = ( (velocity * 0.02) + 9.8 * 0.02 * 0.02/2 ) * 150
         frame.origin.y += CGFloat(dist)
         velocity += 9.8 * 0.02
         bird.frame = frame
@@ -183,12 +183,12 @@ class ViewController: UIViewController {
         }
     }
     func birdUp() {
-        velocity = -1
-        var frame = self.bird.frame
+        velocity = -2.5
+        /*var frame = self.bird.frame
         frame.origin.y -= 40
         UIView.animate(withDuration: 0.2, animations:{
             self.bird.frame = frame
-        })
+        })*/
     }
     func gameOver() {
         let overImage = UIImage(named: "gameover2.png")
