@@ -30,7 +30,7 @@ class ViewController: UIViewController {
         self.creatObstacle()
         self.creatBird()
     }
-    /// 创建 背景、地面
+    /// 创建 背景、地面、计分板
     func creatBackAndFloor() {
         let bgImg = UIImage(named: "bg.jpg")
         let backGround:UIImageView = UIImageView(frame: SCREEN_SIZE)
@@ -46,6 +46,12 @@ class ViewController: UIViewController {
         self.view.addSubview(backGround)
         self.view.addSubview(backImage1)
         self.view.addSubview(backImage2)
+        self.score = UILabel(frame: CGRect(x: 30, y: 100, width: SCREEN_SIZE.width-60, height: 100))
+        self.score?.text = "0"
+        self.score?.font = UIFont(descriptor: UIFontDescriptor(), size: 70)
+        self.score?.textColor = UIColor.white
+        self.score?.textAlignment = .center
+        self.view.addSubview(self.score!)
     }
     //创建障碍物(obstacle) 分数显示器
     func creatObstacle(){
@@ -66,12 +72,6 @@ class ViewController: UIViewController {
                 self.view.insertSubview(bottomObstacle!, aboveSubview: bgImage)
             }
         }
-        self.score = UILabel(frame: CGRect(x: 30, y: 100, width: SCREEN_SIZE.width-60, height: 100))
-        self.score?.text = "0"
-        self.score?.font = UIFont(descriptor: UIFontDescriptor(), size: 70)
-        self.score?.textColor = UIColor.white
-        self.score?.textAlignment = .center
-        self.view.addSubview(self.score!)
     }
     //创建小鸟
     func creatBird() {
@@ -107,9 +107,9 @@ class ViewController: UIViewController {
         self.bgTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(backGroundMove), userInfo: nil, repeats: true)
         self.obstacleTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(obstacleMove), userInfo: nil, repeats: true)
         self.birdTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(birdMove), userInfo: nil, repeats: true)
-        //  self.bgTimer?.fireDate = NSDate.distantFuture
+        self.bgTimer?.fireDate = NSDate.distantFuture
         self.obstacleTimer?.fireDate = NSDate.distantFuture
-        //self.birdTimer?.fireDate = NSDate.distantFuture
+        self.birdTimer?.fireDate = NSDate.distantFuture
     }
     //背景移动
     func backGroundMove(){
@@ -216,6 +216,7 @@ class ViewController: UIViewController {
         self.score?.text = "0"
     }
     func fire__ () {
+        self.bird.startAnimating()
         self.bgTimer?.fireDate = NSDate.distantPast
         self.obstacleTimer?.fireDate = NSDate.distantPast
         self.birdTimer?.fireDate = NSDate.distantPast
@@ -224,6 +225,7 @@ class ViewController: UIViewController {
         self.bgTimer?.fireDate = NSDate.distantFuture
         self.obstacleTimer?.fireDate = NSDate.distantFuture
         self.birdTimer?.fireDate = NSDate.distantFuture
+        self.bird.stopAnimating()
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.fire__()
