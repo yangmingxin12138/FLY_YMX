@@ -15,7 +15,12 @@ class ViewController: UIViewController {
     let OBSTACLE_SPACE:CGFloat = 100
     var bgTimer:Timer?
     var obstacleTimer:Timer?
+    var bird:UIImageView!
+    var birdIsDown:Bool = true
+    var velocity:Float = 0
     var temp = true
+    var birdTimer:Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,6 +28,7 @@ class ViewController: UIViewController {
         self.creatBackAndFloor()
         self.creatTimer()
         self.creatObstacle()
+        self.creatBird()
     }
     /// 创建 背景、地面
     func creatBackAndFloor() {
@@ -61,6 +67,23 @@ class ViewController: UIViewController {
             }
         }
     }
+    //创建小鸟
+    func creatBird() {
+        var images:[UIImage] = [UIImage]()
+        for i in 1...3{
+            let string = String(format: "bird%d.png",i)
+            let image = UIImage(named: string)
+            images.append(image!)
+        }
+        bird = UIImageView(frame: CGRect(x: 100, y: 200, width: 35, height: 35))
+        bird.image = UIImage(named: "bird1.png")
+        bird.animationImages = images
+        bird.animationDuration = 0.5
+        bird.animationRepeatCount = 0
+        bird.startAnimating()
+        bird.tag = 333
+        self.view.addSubview(bird)
+    }
     //随机障碍物高度和距离
    func randomObstacle(topObstacle:UIImageView,bottomObstacle:UIImageView){
         let distance = CGFloat(arc4random()%100) + OBSTACLE_SPACE
@@ -76,9 +99,11 @@ class ViewController: UIViewController {
     func creatTimer() {
         //背景定时器
         self.bgTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(backGroundMove), userInfo: nil, repeats: true)
-        self.obstacleTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(obstacleMove), userInfo: nil, repeats: true)	
-        self.bgTimer?.fireDate = NSDate.distantFuture
+        self.obstacleTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(obstacleMove), userInfo: nil, repeats: true)
+        self.birdTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(birdMove), userInfo: nil, repeats: true)
+      //  self.bgTimer?.fireDate = NSDate.distantFuture
         self.obstacleTimer?.fireDate = NSDate.distantFuture
+        //self.birdTimer?.fireDate = NSDate.distantFuture
     }
     //背景移动
     func backGroundMove(){
@@ -98,6 +123,7 @@ class ViewController: UIViewController {
             frame?.origin.x -= 1
         }
         floorView2?.frame = frame!
+        self.isHit()
     }
     //障碍物移动
     func obstacleMove(){
@@ -123,6 +149,28 @@ class ViewController: UIViewController {
                 }
         }
     }
+    //小鸟的移动
+    func birdMove() {
+            var frame = bird.frame
+            let dist = ( (velocity * 0.02) + 9.8 * 0.02 * 0.02/2 ) * 50
+            frame.origin.y += CGFloat(dist)
+            velocity += 9.8 * 0.02
+            bird.frame = frame
+    }
+    //死亡判定
+    func isHit() {
+        let obstacle1:UIView! = self.view.viewWithTag(202)
+        let obstacle2:UIView! = self.view.viewWithTag(203)
+        let obstacle3:UIView! = self.view.viewWithTag(204)
+        let obstacle4:UIView! = self.view.viewWithTag(205)
+        let obstacle5:UIView! = self.view.viewWithTag(206)
+        let obstacle6:UIView! = self.view.viewWithTag(207)
+        let floor1:UIView! = self.view.viewWithTag(102)
+        let floor2:UIView! = self.view.viewWithTag(103)
+        if  obstacle1.frame.intersects(bird.frame)||obstacle2.frame.intersects(bird.frame)||obstacle3.frame.intersects(bird.frame)||obstacle4.frame.intersects(bird.frame)||obstacle5.frame.intersects(bird.frame)||obstacle6.frame.intersects(bird.frame)||floor1.frame.intersects(bird.frame)||floor2.frame.intersects(bird.frame)||bird.frame.origin.y < -100 {
+            print("gameover")
+        }
+    }
     func fire__ () {
         self.bgTimer?.fireDate = NSDate.distantPast
         self.obstacleTimer?.fireDate = NSDate.distantPast
@@ -132,13 +180,19 @@ class ViewController: UIViewController {
         self.obstacleTimer?.fireDate = NSDate.distantFuture
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        velocity = 0
+        var frame = self.bird.frame
+        frame.origin.y -= 70
+        UIView.animate(withDuration: 0.2, animations:{
+        self.bird.frame = frame
+        })
         if temp {
             self.fire__()
-        }else{
+        }
+        /*else{
             self.stop__()
             
-        }
+        }*/
         temp = !temp
     }
     override func didReceiveMemoryWarning() {

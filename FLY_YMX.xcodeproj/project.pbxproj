@@ -17,6 +17,10 @@
 		0A6CFFBC1DF7A6C2007F6301 /* 03.png in Resources */ = {isa = PBXBuildFile; fileRef = 0A6CFFBB1DF7A6C2007F6301 /* 03.png */; };
 		0ADFD0361DF8090B00B95883 /* 04.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADFD0341DF8090B00B95883 /* 04.png */; };
 		0ADFD0371DF8090B00B95883 /* 05.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADFD0351DF8090B00B95883 /* 05.png */; };
+		0ADFD0411DF8DEF800B95883 /* bird1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADFD03E1DF8DEF800B95883 /* bird1.png */; };
+		0ADFD0421DF8DEF800B95883 /* bird2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADFD03F1DF8DEF800B95883 /* bird2.png */; };
+		0ADFD0431DF8DEF800B95883 /* bird3.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADFD0401DF8DEF800B95883 /* bird3.png */; };
+		0ADFD0451DF8E81000B95883 /* gameover2.png in Resources */ = {isa = PBXBuildFile; fileRef = 0ADFD0441DF8E81000B95883 /* gameover2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,10 @@
 		0A6CFFBB1DF7A6C2007F6301 /* 03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 03.png; sourceTree = "<group>"; };
 		0ADFD0341DF8090B00B95883 /* 04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 04.png; sourceTree = "<group>"; };
 		0ADFD0351DF8090B00B95883 /* 05.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 05.png; sourceTree = "<group>"; };
+		0ADFD03E1DF8DEF800B95883 /* bird1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird1.png; sourceTree = "<group>"; };
+		0ADFD03F1DF8DEF800B95883 /* bird2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird2.png; sourceTree = "<group>"; };
+		0ADFD0401DF8DEF800B95883 /* bird3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird3.png; sourceTree = "<group>"; };
+		0ADFD0441DF8E81000B95883 /* gameover2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gameover2.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +91,10 @@
 				0A6CFFBB1DF7A6C2007F6301 /* 03.png */,
 				0A6CFFB91DF7A2D7007F6301 /* bg.jpg */,
 				0A6CFFB71DF7A2CF007F6301 /* back.png */,
+				0ADFD03E1DF8DEF800B95883 /* bird1.png */,
+				0ADFD03F1DF8DEF800B95883 /* bird2.png */,
+				0ADFD0401DF8DEF800B95883 /* bird3.png */,
+				0ADFD0441DF8E81000B95883 /* gameover2.png */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -119,6 +131,7 @@
 				TargetAttributes = {
 					0A6CFF9A1DF79BBA007F6301 = {
 						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 9MZWHJDQKJ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -148,9 +161,13 @@
 			files = (
 				0A6CFFBA1DF7A2D7007F6301 /* bg.jpg in Resources */,
 				0A6CFFB81DF7A2CF007F6301 /* back.png in Resources */,
+				0ADFD0411DF8DEF800B95883 /* bird1.png in Resources */,
+				0ADFD0421DF8DEF800B95883 /* bird2.png in Resources */,
+				0ADFD0431DF8DEF800B95883 /* bird3.png in Resources */,
 				0A6CFFA91DF79BBA007F6301 /* LaunchScreen.storyboard in Resources */,
 				0A6CFFA61DF79BBA007F6301 /* Assets.xcassets in Resources */,
 				0ADFD0361DF8090B00B95883 /* 04.png in Resources */,
+				0ADFD0451DF8E81000B95883 /* gameover2.png in Resources */,
 				0A6CFFBC1DF7A6C2007F6301 /* 03.png in Resources */,
 				0ADFD0371DF8090B00B95883 /* 05.png in Resources */,
 				0A6CFFA41DF79BBA007F6301 /* Main.storyboard in Resources */,
@@ -288,6 +305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9MZWHJDQKJ;
 				INFOPLIST_FILE = FLY_YMX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.didichuxing.ymx.FLY-YMX";
@@ -300,6 +318,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9MZWHJDQKJ;
 				INFOPLIST_FILE = FLY_YMX/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.didichuxing.ymx.FLY-YMX";
